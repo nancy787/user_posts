@@ -25,15 +25,18 @@ Route::group(['middleware' => 'blocked'], function () {
 
 
 Route::group(['middleware' => 'role:admin'], function () {
-    // Routes accessible only to admins
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+    Route::delete('/posts/{id}', [PostController::class,'destroy'])->name('posts.destroy');
 });
 
 Route::group(['middleware' => 'role:user'], function () {
-    // Routes accessible only to users
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 });
 
 Route::get('/admin/dashboard', function () {
-})->middleware('admin');
+    return view('admin.dashboard');
+})->middleware('role:admin');
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::delete('/posts/{id}', [PostController::class,'destroy'])->name('posts.destroy');
+// Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
+// Route::delete('/posts/{id}', [PostController::class,'destroy'])->name('posts.destroy');

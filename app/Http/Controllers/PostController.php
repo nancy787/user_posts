@@ -17,17 +17,12 @@ class PostController extends Controller
 
     public function destroy($id) {
        $post =  Post::find($id);
-    // Check if the authenticated user is authorized to delete the post
-    if (auth()->user()->role === 'admin') {
-        // Delete the post
-        $post->delete();
-
-        // Redirect back with success message
-        return redirect()->back()->with('success', 'Post deleted successfully.');
-    } else {
-        // If user is not authorized, show error message
-        return redirect()->back()->with('error', 'Unauthorized to delete post.');
-    }
+            if (auth()->user()->role === 'admin') {
+                $post->delete();
+                return redirect()->back()->with('success', 'Post deleted successfully.');
+            } else {
+                return redirect()->back()->with('error', 'Unauthorized to delete post.');
+            }
 
     }
 }
